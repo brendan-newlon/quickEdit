@@ -10,7 +10,7 @@ quickEdit(x)
 \item{x}{The variable for your R object.}
 }
 \description{
-This function exports and opens a data object in your system's default editor for .csv or .txt files, then reloads the data to its original variable when changes to the file are saved.
+This function exports and opens a data object in your system's default editor for .csv or .txt files, then reloads the data to its original variable when changes to the file are saved. Since it will overwrite (and potentially corrupt) the data in your variable, it is recommended to make a backup copy of your data before using this function.
 }
 \examples{
 quickEdit(df)

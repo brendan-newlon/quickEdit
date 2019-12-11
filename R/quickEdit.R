@@ -1,6 +1,6 @@
 #' Quickly edit R data object in system's default program.
 #'
-#' This function exports and opens a data object in your system's default editor for .csv or .txt files, then reloads the data to its original variable when changes to the file are saved.
+#' This function exports and opens a data object in your system's default editor for .csv or .txt files, then reloads the data to its original variable when changes to the file are saved. Since it will overwrite (and potentially corrupt) the data in your variable, it is recommended to make a backup copy of your data before using this function.
 #'
 #' @param x The variable for your R object.
 #'
@@ -12,7 +12,13 @@ quickEdit <- function(x) {
   z <- x
   if (class(x) %in% c("data.frame", "tbl", "list")) {
     ext <- ".csv"
-    colNames <- TRUE
+    # colNames <- TRUE
+    if (class(x) == "list") {
+      colNames <- FALSE
+      z <- paste(z, sep = ",,")
+    } else {
+      colNames <- TRUE
+    }
   } else {
     ext <- ".txt"
     colNames <- FALSE
@@ -21,7 +27,7 @@ quickEdit <- function(x) {
   file <- paste0("quickEdit", ext)
 
   # Write data to a file
-  write.table(x, file, col.names = colNames, row.names = FALSE) # save data to file
+  write.table(z, file, col.names = colNames, row.names = FALSE) # save data to file
 
   # Get last modifide time at start
   startState <-
@@ -56,14 +62,17 @@ quickEdit <- function(x) {
     "Reading the data."
   ))
 
-  if (class(x) %in% c("data.frame", "tbl", "list")) {
+  if (class(x) %in% c("data.frame", "tbl")) {
     y <- read.csv(file)
+  } else if (class(x) == "list") {
+    y <- read.csv(file, header = FALSE)
+    y <- as.vector(y[, 1])
+    q <- as.list(y)
+    y <- as.list(q)
   } else {
     y <- gsub("\\\"", "", read_lines(file))
   }
-
   name <- deparse(substitute(x))
   assign(name, y, envir = .GlobalEnv)
 }
-
 # quickEdit(df)
