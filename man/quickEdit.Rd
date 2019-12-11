@@ -2,9 +2,7 @@
 % Please edit documentation in R/quickEdit.R
 \name{quickEdit}
 \alias{quickEdit}
-\title{saveVersion - An offline version control function
-
-This function allows you to quickly edit data in your system's default editor for .csv or .txt files.}
+\title{Quickly edit R data object in system's default program.}
 \usage{
 quickEdit(x)
 }
@@ -12,11 +10,9 @@ quickEdit(x)
 \item{x}{The variable for your R object.}
 }
 \description{
-saveVersion - An offline version control function
-
-This function allows you to quickly edit data in your system's default editor for .csv or .txt files.
+This function exports and opens a data object in your system's default editor for .csv or .txt files, then reloads the data to its original variable when changes to the file are saved.
 }
 \examples{
 quickEdit(df)
+
 }
-\keyword{editor}
